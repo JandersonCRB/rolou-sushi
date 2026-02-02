@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { createGroup } from "@/lib/firestore";
@@ -18,12 +18,11 @@ export default function CreateGroupPage() {
     groupCode: string;
   } | null>(null);
 
-  if (!hydrated) return null;
+  useEffect(() => {
+    if (hydrated && !username) router.push("/");
+  }, [hydrated, username, router]);
 
-  if (!username) {
-    router.push("/");
-    return null;
-  }
+  if (!hydrated || !username) return null;
 
   const handleCreate = async (e: React.FormEvent) => {
     e.preventDefault();

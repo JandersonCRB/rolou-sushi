@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, Suspense } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { getGroupByCode, addMember } from "@/lib/firestore";
 import { STRINGS } from "@/lib/constants";
@@ -15,13 +15,14 @@ function JoinGroupContent() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  if (!hydrated) return null;
+  useEffect(() => {
+    if (hydrated && !username) {
+      const action = `join${initialCode ? `&code=${initialCode}` : ""}`;
+      router.push(`/username?action=${action}`);
+    }
+  }, [hydrated, username, router, initialCode]);
 
-  if (!username) {
-    const action = `join${initialCode ? `&code=${initialCode}` : ""}`;
-    router.push(`/username?action=${action}`);
-    return null;
-  }
+  if (!hydrated || !username) return null;
 
   const handleJoin = async (code: string) => {
     setError("");
