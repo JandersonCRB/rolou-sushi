@@ -10,13 +10,15 @@ import GroupCreated from "@/components/GroupCreated";
 
 export default function CreateGroupPage() {
   const router = useRouter();
-  const { username, setGroup } = useAppStore();
+  const { username, hydrated, setGroup } = useAppStore();
   const [groupName, setGroupName] = useState("");
   const [loading, setLoading] = useState(false);
   const [created, setCreated] = useState<{
     groupId: string;
     groupCode: string;
   } | null>(null);
+
+  if (!hydrated) return null;
 
   if (!username) {
     router.push("/");

@@ -11,9 +11,11 @@ function JoinGroupContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const initialCode = searchParams.get("code") || "";
-  const { username, setGroup } = useAppStore();
+  const { username, hydrated, setGroup } = useAppStore();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+
+  if (!hydrated) return null;
 
   if (!username) {
     const action = `join${initialCode ? `&code=${initialCode}` : ""}`;

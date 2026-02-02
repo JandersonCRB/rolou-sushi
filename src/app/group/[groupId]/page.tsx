@@ -17,13 +17,14 @@ export default function GroupPage() {
   const params = useParams();
   const router = useRouter();
   const groupId = params.groupId as string;
-  const { username, groupCode, groupName, members, setMembers, setGroup } =
+  const { username, hydrated, groupCode, groupName, members, setMembers, setGroup } =
     useAppStore();
   const [showInvite, setShowInvite] = useState(false);
   const [loading, setLoading] = useState(true);
   const prevCountRef = useRef(0);
 
   useEffect(() => {
+    if (!hydrated) return;
     if (!username) {
       router.push("/");
       return;
@@ -42,7 +43,7 @@ export default function GroupPage() {
     });
 
     return () => unsub();
-  }, [groupId, username]);
+  }, [groupId, username, hydrated]);
 
   const currentMember = members.find((m) => m.username === username);
   const currentCount = currentMember?.sushiCount ?? 0;
@@ -51,7 +52,7 @@ export default function GroupPage() {
     prevCountRef.current = currentCount;
   }, [currentCount]);
 
-  if (!username) return null;
+  if (!hydrated || !username) return null;
   if (loading) return <LoadingSpinner />;
 
   return (
