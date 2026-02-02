@@ -118,14 +118,22 @@ export async function updateSushiCount(
 
 export function subscribeToMembers(
   groupId: string,
-  callback: (members: Member[]) => void
+  callback: (members: Member[]) => void,
+  onError?: (error: Error) => void
 ): () => void {
   const q = query(
     collection(db, "groups", groupId, "members"),
     orderBy("sushiCount", "desc")
   );
-  return onSnapshot(q, (snap) => {
-    const members = snap.docs.map((d) => d.data() as Member);
-    callback(members);
-  });
+  return onSnapshot(
+    q,
+    (snap) => {
+      const members = snap.docs.map((d) => d.data() as Member);
+      callback(members);
+    },
+    (err) => {
+      console.error("subscribeToMembers error:", err);
+      onError?.(err);
+    }
+  );
 }

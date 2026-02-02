@@ -12,6 +12,7 @@ import Leaderboard from "@/components/Leaderboard";
 import InviteDialog from "@/components/InviteDialog";
 import ConfettiAnimation from "@/components/ConfettiAnimation";
 import LoadingSpinner from "@/components/LoadingSpinner";
+import ErrorDisplay from "@/components/ErrorDisplay";
 
 export default function GroupPage() {
   const params = useParams();
@@ -22,6 +23,7 @@ export default function GroupPage() {
   const hydrated = useHydration();
   const [showInvite, setShowInvite] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
   const prevCountRef = useRef(0);
 
   useEffect(() => {
@@ -38,10 +40,17 @@ export default function GroupPage() {
       });
     }
 
-    const unsub = subscribeToMembers(groupId, (data) => {
-      setMembers(data);
-      setLoading(false);
-    });
+    const unsub = subscribeToMembers(
+      groupId,
+      (data) => {
+        setMembers(data);
+        setLoading(false);
+      },
+      (err) => {
+        setError(err.message);
+        setLoading(false);
+      }
+    );
 
     return () => unsub();
   }, [groupId, username, hydrated]);
@@ -55,6 +64,7 @@ export default function GroupPage() {
 
   if (!hydrated || !username) return null;
   if (loading) return <LoadingSpinner />;
+  if (error) return <ErrorDisplay message={error} onRetry={() => window.location.reload()} />;
 
   return (
     <div className="flex min-h-dvh flex-col items-center px-4 pb-8 pt-6">
