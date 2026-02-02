@@ -5,12 +5,13 @@ import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { createGroup } from "@/lib/firestore";
 import { STRINGS } from "@/lib/constants";
-import { useAppStore } from "@/store/useAppStore";
+import { useAppStore, useHydration } from "@/store/useAppStore";
 import GroupCreated from "@/components/GroupCreated";
 
 export default function CreateGroupPage() {
   const router = useRouter();
-  const { username, hydrated, setGroup } = useAppStore();
+  const { username, setGroup } = useAppStore();
+  const hydrated = useHydration();
   const [groupName, setGroupName] = useState("");
   const [loading, setLoading] = useState(false);
   const [created, setCreated] = useState<{

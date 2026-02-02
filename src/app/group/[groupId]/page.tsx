@@ -6,7 +6,7 @@ import Image from "next/image";
 import { AnimatePresence } from "framer-motion";
 import { subscribeToMembers, getGroup } from "@/lib/firestore";
 import { IMAGES, STRINGS } from "@/lib/constants";
-import { useAppStore } from "@/store/useAppStore";
+import { useAppStore, useHydration } from "@/store/useAppStore";
 import SushiCounter from "@/components/SushiCounter";
 import Leaderboard from "@/components/Leaderboard";
 import InviteDialog from "@/components/InviteDialog";
@@ -17,8 +17,9 @@ export default function GroupPage() {
   const params = useParams();
   const router = useRouter();
   const groupId = params.groupId as string;
-  const { username, hydrated, groupCode, groupName, members, setMembers, setGroup } =
+  const { username, groupCode, groupName, members, setMembers, setGroup } =
     useAppStore();
+  const hydrated = useHydration();
   const [showInvite, setShowInvite] = useState(false);
   const [loading, setLoading] = useState(true);
   const prevCountRef = useRef(0);

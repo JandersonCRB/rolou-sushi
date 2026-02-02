@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import type { Member } from "@/lib/types";
@@ -10,7 +11,6 @@ interface AppState {
   groupCode: string;
   groupName: string;
   members: Member[];
-  hydrated: boolean;
   setUsername: (username: string) => void;
   setGroup: (groupId: string, groupCode: string, groupName: string) => void;
   setMembers: (members: Member[]) => void;
@@ -25,7 +25,6 @@ export const useAppStore = create<AppState>()(
       groupCode: "",
       groupName: "",
       members: [],
-      hydrated: false,
       setUsername: (username) => set({ username }),
       setGroup: (groupId, groupCode, groupName) =>
         set({ groupId, groupCode, groupName }),
@@ -47,9 +46,22 @@ export const useAppStore = create<AppState>()(
         groupCode: state.groupCode,
         groupName: state.groupName,
       }),
-      onRehydrateStorage: () => () => {
-        useAppStore.setState({ hydrated: true });
-      },
     }
   )
 );
+
+export function useHydration() {
+  const [hydrated, setHydrated] = useState(
+    useAppStore.persist.hasHydrated()
+  );
+
+  useEffect(() => {
+    if (hydrated) return;
+    const unsub = useAppStore.persist.onFinishHydration(() =>
+      setHydrated(true)
+    );
+    return unsub;
+  }, [hydrated]);
+
+  return hydrated;
+}

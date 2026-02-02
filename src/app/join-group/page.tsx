@@ -4,14 +4,15 @@ import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { getGroupByCode, addMember } from "@/lib/firestore";
 import { STRINGS } from "@/lib/constants";
-import { useAppStore } from "@/store/useAppStore";
+import { useAppStore, useHydration } from "@/store/useAppStore";
 import JoinGroupForm from "@/components/JoinGroupForm";
 
 function JoinGroupContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const initialCode = searchParams.get("code") || "";
-  const { username, hydrated, setGroup } = useAppStore();
+  const { username, setGroup } = useAppStore();
+  const hydrated = useHydration();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
