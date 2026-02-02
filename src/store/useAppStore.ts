@@ -51,9 +51,10 @@ export const useAppStore = create<AppState>()(
 );
 
 export function useHydration() {
-  const [hydrated, setHydrated] = useState(
-    useAppStore.persist.hasHydrated()
-  );
+  const [hydrated, setHydrated] = useState(() => {
+    if (typeof window === "undefined") return false;
+    return useAppStore.persist?.hasHydrated() ?? false;
+  });
 
   useEffect(() => {
     if (hydrated) return;
