@@ -1,0 +1,32 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-sushi-pink: #FF6B8A;
+  --color-sushi-mint: #7DD3B0;
+  --color-sushi-cream: #FFF8F0;
+  --color-sushi-coral: #FF8C6B;
+  --color-sushi-dark: #2D1B14;
+  --color-sushi-gray: #6B5E57;
+  --font-sans: var(--font-nunito);
+}
+
+body {
+  background-color: var(--color-sushi-cream);
+  color: var(--color-sushi-dark);
+  font-family: var(--font-sans), system-ui, sans-serif;
+  min-height: 100dvh;
+}
+
+/* Prevent overscroll bounce on iOS */
+html {
+  overscroll-behavior: none;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 4px;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-sushi-pink);
+  border-radius: 4px;
+}
