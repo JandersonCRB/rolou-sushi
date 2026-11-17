@@ -8,7 +8,7 @@ const firebaseConfig = {
   storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
   messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
-  // Fallback: a env n„o estava definida no build de produÁ„o, ent„o o GA4 nunca inicializava.
+  // Fallback: a env n√£o estava definida no build de produ√ß√£o, ent√£o o GA4 nunca inicializava.
   measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID || "G-YC688CT2EW",
 };
 
