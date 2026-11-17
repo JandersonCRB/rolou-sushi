@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Nunito } from "next/font/google";
 import "./globals.css";
+import AnalyticsInit from "@/components/AnalyticsInit";
 
 const nunito = Nunito({
   variable: "--font-nunito",
@@ -26,7 +27,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-BR">
-      <body className={`${nunito.variable} antialiased`}>{children}</body>
+      <body className={`${nunito.variable} antialiased`}><AnalyticsInit />
+        {children}
+      </body>
     </html>
   );
 }
